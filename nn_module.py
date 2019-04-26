@@ -173,11 +173,11 @@ class Softmax(FreeParamNNModule):
         self.cache_output = None  # used for backprop
 
     def forward_prop(self, x):
-        # here we can do the softmax trick for speed up
+        # here we can do the softmax trick for speed up and numerical stability
         # we can easily proof that softmax(x) = softmax(x - c)
         # so we can subtract the max value from x to reduce the computation
 
-        max_value = np.max(x, axis=1)  # (B, 1)
+        max_value = np.max(x, axis=1)  # (B,)
         exps = np.exp((x.transpose() - max_value).transpose())  # use numpy broadcasting trick. (B, D)
         norm = np.sum(exps, axis=1)
         output = (exps.transpose() / norm).transpose()  # use broadcasting also here
@@ -203,7 +203,6 @@ class Softmax(FreeParamNNModule):
         v_s = np.empty((batch_size, n_out))
         for i in range(batch_size):
             v_s[i, :] = np.dot(grad_out[i, :], self.cache_output[i, :])
-
         v_s = grad_out - v_s
         z = np.multiply(self.cache_output, v_s)
         return z
