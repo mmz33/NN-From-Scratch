@@ -18,7 +18,7 @@ def read_data_files(data_path, labels_path):
     return data, labels
 
 
-def plot_mnist_image(image, label=None):
+def plot_image(image, label=None):
     """Plot MNIST image
 
     :param image: mnist image data pixels
