@@ -20,5 +20,6 @@ def test_model(model, batch_size, test_data):
         batch_preds = np.isclose(preds, test_batch_labels)
         pred_acc += np.sum(batch_preds)
     print('End testing')
-    print('Number of errors: {}', num_of_data - pred_acc)
-    print('Test accuracy: {}'.format(pred_acc/num_of_data))
+    print('Number of errors: {}/{}'.format(num_of_data - pred_acc, num_of_data))
+    print('Error Rate: %.02f%%' % ((1.0 - pred_acc/num_of_data) * 100))
+    print('Test accuracy: %.02f%%' % ((pred_acc/num_of_data) * 100))
