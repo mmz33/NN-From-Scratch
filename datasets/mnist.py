@@ -222,7 +222,7 @@ class DataSet(object):
             end = self._index_in_epoch
             rest_images = self._images[start:end]
             rest_labels = self._labels[start:end]
-            return np.concatenate(rem_images, rest_images), np.concatenate(rem_labels, rest_labels)
+            return np.concatenate((rem_images, rest_images)), np.concatenate((rem_labels, rest_labels))
         else:
             # return the data for this batch
             self._index_in_epoch += batch_size
