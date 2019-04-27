@@ -252,7 +252,7 @@ def read_datasets(train_dir, dtype=np.float32, reshape=True, validation_size=500
         'validation size should be between 0 and {}. Received: {}.'.format(validation_size, len(train_images))
 
     valid_images = train_images[:validation_size]
-    valid_labels = train_images[:validation_size]
+    valid_labels = train_labels[:validation_size]
     train_images = train_images[validation_size:]
     train_labels = train_labels[validation_size:]
 
