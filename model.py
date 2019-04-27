@@ -1,5 +1,4 @@
 from nn_module import NNModule
-import logging
 import inspect
 import numpy as np
 from collections import defaultdict
@@ -15,7 +14,7 @@ class NNModel:
 
         :param modules_list: list of pair where each pair is a module class and it's args as dict
         """
-        logging.debug('Building model...')
+        print('Building model...')
         self.backprop_cache = defaultdict(None)  # used later for updated the parameters
         self.modules = []
         for (Module, args) in modules_list:
@@ -24,14 +23,14 @@ class NNModel:
                 raise Exception(str(Module.__class__.__name__) + ' is not supported')
             m = Module(**args)
             self.modules.append(m)
-        logging.debug('Model is ready')
+        print('Model is ready')
 
     def init_network(self):
         """Initialize the parameters of each module in the network"""
-        logging.debug('Initializing model''s parameters...')
+        print('Initializing model''s parameters...')
         for module in self.modules:
             module.init_params()
-        logging.debug('Model is initialized')
+        print('Model is initialized')
 
     def forward_prop(self, x):
         """
@@ -42,10 +41,10 @@ class NNModel:
         :param x: input
         :return output of the network
         """
-        logging.debug('Running forward pass...')
+        print('Running forward pass...')
         for m in self.modules:
             x = m.forward_prop(x)
-        logging.debug('Forward pass is completed')
+        print('Forward pass is completed')
         return x
 
     def back_prop(self, grad_out):
@@ -54,16 +53,16 @@ class NNModel:
         It will run from the output layer (last module) up to the input layer (first module)
         So , the error of one module is propagated to the previous module (since we are moving backward)
         """
-        logging.debug('Running backpropagation...')
+        print('Running backpropagation...')
         for module in reversed(self.modules):
             self.backprop_cache[module] = np.array(grad_out)
             grad_out = module.back_prop(grad_out)
-        logging.debug('Backpropagation is done')
+        print('Backpropagation is done')
 
     def update_network_params(self, update_func):
-        logging.debug('Updating network parameters...')
+        print('Updating network parameters...')
         for module in self.modules:
             grad_params = module.get_params_grad(self.backprop_cache[module])
             if grad_params:
                 module.params_update(update_func, grad_params)
-        logging.debug('Parameters are updated')
+        print('Parameters are updated')
