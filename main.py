@@ -11,7 +11,9 @@ import pickle
 # just a simple example demo
 def build_and_train_model(batch_size, epochs, lr, train_data, valid_data):
     modules_list = [
-        (nn_module.Linear, {'n_in': 28*28, 'n_out': 10}),
+        (nn_module.Linear, {'n_in': 28*28, 'n_out': 200}),
+        (nn_module.Tanh, {}),
+        (nn_module.Linear, {'n_in': 200, 'n_out': 10}),
         (nn_module.Softmax, {})
     ]
 
@@ -40,7 +42,7 @@ def main():
 
     net_model = None
     if args.train:
-        net_model = build_and_train_model(1000, 10, 0.1, datasets.train, datasets.valid)
+        net_model = build_and_train_model(1000, 100, 0.7, datasets.train, datasets.valid)
         # save model for testing later
         if net_model and args.model_file:
             print('Saving model to file %s' % args.model_file)
