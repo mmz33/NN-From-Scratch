@@ -5,6 +5,7 @@ import train
 import test
 import argparse
 import pickle
+import sys
 
 
 # TODO: make this more flexible, such as parsing a json config
@@ -30,11 +31,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.register('type', 'bool', lambda v: v.lower() == 'true')
     parser.add_argument("--model_file", type=str, default='./model.pkl', help='Pickle file for model (dir has to exist)')
-    parser.add_argument('--data_dir', type=str, default='./data', help='data dir for downloaded dataset')
+    parser.add_argument('--data_dir', type=str, default='./mnist_data', help='data dir for downloaded dataset')
     parser.add_argument('--train', type='bool', nargs='?', const=True, default=False, help='Run training')
     parser.add_argument('--test', type='bool', nargs='?', const=True, default=False, help='Run test')
+    parser.add_argument('--log_file', type=str, default=None, help='log file dir (dir has to exist)')
 
     args = parser.parse_args()
+
+    if args.log_file:
+        sys.stdout = open(args.log_file, 'w')
 
     # read data
     dataset_dir = args.data_dir
@@ -42,7 +47,7 @@ def main():
 
     net_model = None
     if args.train:
-        net_model = build_and_train_model(1000, 100, 0.7, datasets.train, datasets.valid)
+        net_model = build_and_train_model(1000, 20, 0.7, datasets.train, datasets.valid)
         # save model for testing later
         if net_model and args.model_file:
             print('Saving model to file %s' % args.model_file)
@@ -60,6 +65,8 @@ def main():
 
         # model is loaded
         test.test_model(net_model, 1000, datasets.test)
+
+    sys.stdout.close()
 
 
 if __name__ == '__main__':

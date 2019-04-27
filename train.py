@@ -58,7 +58,7 @@ def train(model, loss, batch_size, epochs, lr, train_data, valid_data, valid_epo
             model.back_prop(z)
             model.update_network_params(update_func)
 
-        print('Epoch {} is done. Epoch loss: {}'.format(epoch, total_epoch_loss/n_batches))
+        print('Epoch loss:', total_epoch_loss/n_batches)
 
         if epoch % valid_epoch == 0:
             print('Start validation on epoch {}'.format(epoch))
