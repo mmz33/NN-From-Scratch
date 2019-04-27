@@ -200,7 +200,7 @@ class DataSet(object):
             self._labels = self._labels[perm0]
 
         # go to next epoch
-        if start + self._index_in_epoch > self._num_of_data:
+        if start + batch_size > self._num_of_data:
             self._epochs_completed += 1
 
             # first collect the remaining data in case num of data is not divisible by the batch size
