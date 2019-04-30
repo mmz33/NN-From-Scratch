@@ -14,7 +14,7 @@ def gradient_descent(param, param_grad, lr):
     return param - param_grad * lr
 
 
-def train(model, loss, batch_size, epochs, lr, train_data, valid_data, valid_epoch=5):
+def train(model, loss, batch_size, epochs, lr, start_epoch_decay, decay_rate, train_data, valid_data, valid_epoch=5):
     """Train model
 
     :param model: NN training model
@@ -29,11 +29,23 @@ def train(model, loss, batch_size, epochs, lr, train_data, valid_data, valid_epo
     model.init_network()
     update_func = partial(gradient_descent, lr=lr)  # other params will be filled later when called
     best_valid_loss = np.inf
+
+    # used for learning rate scheduling depending on the epoch and decay rate
+    curr_lr = lr
+    decay_counter = 1
+
     print('Start training...')
     for epoch in range(1, epochs+1):
         print('Start epoch {}/{}'.format(epoch, epochs))
         total_epoch_loss = 0.0
         n_batches = int(np.ceil(float(train_data.num_of_data)/batch_size))
+
+        if epoch >= start_epoch_decay:
+            lr_decay = decay_rate ** decay_counter
+            curr_lr *= lr_decay
+            decay_counter += 1
+            update_func.keywords['lr'] = curr_lr
+
         for batch_num in range(n_batches):
 
             # fetch data
@@ -58,7 +70,7 @@ def train(model, loss, batch_size, epochs, lr, train_data, valid_data, valid_epo
             model.back_prop(z)
             model.update_network_params(update_func)
 
-        print('Epoch loss:', total_epoch_loss/n_batches)
+        print('Epoch {} loss: {}'.format(epoch, total_epoch_loss/n_batches))
 
         if epoch % valid_epoch == 0:
             print('Start validation on epoch {}'.format(epoch))
@@ -72,7 +84,7 @@ def train(model, loss, batch_size, epochs, lr, train_data, valid_data, valid_epo
                 total_valid_loss += np.mean(valid_batch_loss)
 
             avg_loss = total_valid_loss/n_batches
-            print('Validation Loss: {}'.format(avg_loss))
+            print('Validation loss: {}'.format(avg_loss))
             if avg_loss >= best_valid_loss:
                 print('Validation error is not improving... stopping')
                 break  # early stopping
