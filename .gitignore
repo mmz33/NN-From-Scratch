@@ -2,3 +2,5 @@
 *pycache*
 *.gz
 *.pkl
+log
+Kaggle
