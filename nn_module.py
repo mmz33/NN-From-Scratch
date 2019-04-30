@@ -152,13 +152,15 @@ class ReLU(FreeParamNNModule):
         self.cache_output = None
 
     def forward_prop(self, x):
-        output = max(0, x)
+        output = np.maximum(0, x)
         self.cache_output = output
         return output
 
     def back_prop(self, grad_out):
         assert self.cache_output is not None, 'The output of ReLU is not computed to apply backprop'
-        return grad_out if self.cache_output > 0 else 0
+        z = np.array(grad_out)
+        z[self.cache_output <= 0] = 0
+        return z
 
 
 class Softmax(FreeParamNNModule):
