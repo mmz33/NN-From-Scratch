@@ -8,9 +8,9 @@ Currently, there is a python script in `datasets` folder called `mnist.py` which
 
 ### Training
 ---
-To train your model, define it in `main.py` and just run: `python3 main.py --train`
+To train your model using the MNIST dataset, define it in `main.py` (as a task later this can be read from a python file for example or any other kind) and just run: `python3 main.py --train`
 
-You can also add more flags for the hyperparameters for example. For that, you can find more details by running `--help`
+You can also add more flags for the hyperparameters for example. For that, you can find more details by running `--help`. Later there can be a flag for choosing the dataset and based on that this dataset is used for training the model.
 
 ### Testing
 ---
