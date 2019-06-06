@@ -1,6 +1,6 @@
 # Neural Network From Scratch
 
-The purpose of this piece of code is to have a taste about what is really going on inside a Neural Network (NN). It is done for educational purposes and for fun :) Breifly, a NN is a function mapping from an input to some output depending on the task. In between relies what are called the "hidden layers" and there where all the majic is done. These layers have trainable parameters. The goal at the end is to minimize some loss function which is dependent on the network parameters. In order to find the optimal parameters, we use some kind of gradient descent optimizer (e.g stocastic gradient descent, Momentum, etc) with the help of the backpropagation algorithm.
+The purpose of this piece of code is to have a taste about what is really going on inside a Neural Network (NN). It is done for educational purposes and for fun :) Breifly, a NN is a function mapping from an input to some output depending on the task. In between relies what are called the "hidden layers" and there where all the magic is done. These layers have trainable parameters. The goal at the end is to minimize some loss function which is dependent on the network parameters. In order to find the optimal parameters, we use some kind of gradient descent optimizer (e.g stocastic gradient descent, Momentum, etc) with the help of the backpropagation algorithm.
 
 ## Datasets
 
