@@ -1,6 +1,6 @@
-.idea
+.idea/
 *pycache*
 *.gz
 *.pkl
-log
-Kaggle
+log/
+Kaggle/
