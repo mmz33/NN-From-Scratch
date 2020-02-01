@@ -2,5 +2,5 @@
 *pycache*
 *.gz
 *.pkl
-log/
-kaggle/
+logs/
+models/
