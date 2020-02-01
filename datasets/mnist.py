@@ -230,7 +230,6 @@ class DataSet(object):
             return self._images[start:end], self._labels[start:end]
 
 
-# TODO: Maybe needs refactoring?
 def read_datasets(train_dir, dtype=np.float32, reshape=True, validation_size=5000):
     # train images
     f = maybe_download(DEFAULT_URL + TRAIN_IMAGES, TRAIN_IMAGES, train_dir)
