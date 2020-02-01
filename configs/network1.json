@@ -1,0 +1,31 @@
+{
+  "task": "test",
+  "network": {
+    "layer1": {
+      "class": "linear",
+      "n_in": 784,
+      "n_out": 200
+    },
+    "layer2": {
+      "class": "tanh"
+    },
+    "layer3": {
+      "class": "linear",
+      "n_in": 200,
+      "n_out": 10
+    },
+    "layer4": {
+      "class": "softmax"
+    }
+  },
+  "model_file": "models/network1-model.pkl",
+  "data_dir": "mnist_data",
+  "log_file": "none",
+  "lr": 0.7,
+  "num_epochs": 100,
+  "valid_epoch": 5,
+  "decay_rate": 0.3,
+  "start_epoch_decay": 5,
+  "batch_size": 100,
+  "loss": "ce"
+}
