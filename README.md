@@ -17,6 +17,8 @@ Currently, there is a python script in `datasets` folder called `mnist.py` which
 
 ## Training
 
+For dependencies, it is recommended to create a virtual enviroment and do `pip3 install -r requirements.txt`.
+
 To train your model using the MNIST dataset, define the network and other parameters as a json file (see `configs/network1.json` for an example. For training, `task` should be set to `train` inside the json file. After that, you can just do:
 
 `python3 main.py configs/your_json_file` or `./main.py configs/your_json_file`
