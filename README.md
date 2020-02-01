@@ -21,6 +21,8 @@ To train your model using the MNIST dataset, define the network and other parame
 
 `python3 main.py configs/your_json_file` or `./main.py configs/your_json_file`
 
+The models will be saved in `models/model_file` where `model_file` is the name of the model set in the json config file. This will be dumped as pickle file and can be loaded again for testing.
+
 ## Testing
 
 For testing, just change the `task` in the json config to `test`. The results on the MNIST dataset with `configs/network1.json` config are:
