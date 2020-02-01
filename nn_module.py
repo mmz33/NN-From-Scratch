@@ -1,11 +1,13 @@
 import abc
 import numpy as np
+import utils
 
 
 class NNModule:
     """Abstract class representing an interface where every NN module has to implement"""
 
     __metaclass__ = abc.ABCMeta
+    module_name = None
 
     def init_params(self):
         """Initialize the module parameters"""
@@ -48,6 +50,7 @@ class FreeParamNNModule(NNModule):
     """Abstract class representing free (trainable) parameters modules"""
 
     __metaclass__ = abc.ABCMeta
+    module_name = None
 
     def init_params(self):
         # no parameters
@@ -66,6 +69,7 @@ class LossNNModule(NNModule):
     """Abstract class representing loss modules (e.g cross entropy loss, etc)"""
 
     __metaclass__ = abc.ABCMeta
+    module_name = None
 
     def __init__(self):
         self.t = None
@@ -92,6 +96,8 @@ class LossNNModule(NNModule):
 
 class Linear(NNModule):
     """Represents a Linear layer that applies a linear projection"""
+
+    module_name = "linear"
 
     def __init__(self, n_in, n_out):
         """
@@ -133,6 +139,8 @@ class Linear(NNModule):
 
 class Tanh(FreeParamNNModule):
 
+    module_name = "tanh"
+
     def __init__(self):
         self.cache_output = None
 
@@ -147,6 +155,8 @@ class Tanh(FreeParamNNModule):
 
 
 class ReLU(FreeParamNNModule):
+
+    module_name = "relu"
 
     def __init__(self):
         self.cache_output = None
@@ -170,6 +180,8 @@ class Softmax(FreeParamNNModule):
     then softmax(x) = [softmax(x_1), ..., softmax(x_n)]
     where softmax(x_i) = e^{x_i} / sum_{j}(e^{x_j})
     """
+
+    module_name = "softmax"
 
     def __init__(self):
         self.cache_output = None  # used for backprop
@@ -222,6 +234,8 @@ class CrossEntropyLoss(LossNNModule):
     Note that softmax is coupled with cross entropy loss
     """
 
+    module_name = "ce"
+
     def __init__(self):
         super(CrossEntropyLoss, self).__init__()
         self.cache_input = None
@@ -268,6 +282,8 @@ class LogSoftmax(FreeParamNNModule):
 
     """
 
+    module_name = "log_softmax"
+
     def __init__(self):
         self.cache_output = None
 
@@ -298,6 +314,8 @@ class LogCrossEntropyLoss(LossNNModule):
     Same as cross entropy loss but now with log (coupled with log softmax)
     """
 
+    module_name = "log_ce"
+
     def __init__(self):
         super(LogCrossEntropyLoss, self).__init__()
         self.cache_input = None
@@ -314,3 +332,27 @@ class LogCrossEntropyLoss(LossNNModule):
         z = np.zeros((batch_size, n_in))
         z[np.arange(batch_size), self.t] = -1
         return np.multiply(grad_out, z, z)
+
+
+_module_name_dict = {}
+_is_module_name_dict_initialized = False
+
+
+def _init_module_name_dict():
+    global _is_module_name_dict_initialized
+    _is_module_name_dict_initialized = True
+    register_modules(list(globals().values()))
+
+
+def register_modules(modules):
+    for module in modules:
+        if isinstance(module, type) and issubclass(module, NNModule) and module.module_name:
+            _module_name_dict[module.module_name] = module
+
+
+def get_module(name):
+    if not _is_module_name_dict_initialized:
+        _init_module_name_dict()
+    elif name not in _module_name_dict:
+        raise Exception('Unknown module name: {}'.format(name))
+    return _module_name_dict[name]
