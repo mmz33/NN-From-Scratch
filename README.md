@@ -6,13 +6,26 @@ The purpose of this piece of code is to have a taste about what is really going 
 
 Currently, there is a python script in `datasets` folder called `mnist.py` which basically downloads (if necessary) and prepares automatically this dataset for you. This can be extended later to support different datasets and of course you can implement your own dataset class and integrate it with the current code.
 
+## Components
+
+- `main.py`: the main entry point.
+- `config.py`: parse the json config file that contains the network and other (hyper)parameter.
+- `engine.py`: backend engine that extracts content from the parsed json, construct the network layers, implements train and test functions.
+- `nn_module.py`: represents a NN module such as layers, activations, loss functions, etc
+- `model.py`: represents the NN model which is a stack of modules
+- `utils`: contains some helper functions.
+
 ## Training
 
-To train your model using the MNIST dataset, define it in `main.py` (as a task later this can be read from a python file for example or any other file kind) and just run: `python3 main.py --train`
+To train your model using the MNIST dataset, define the network and other parameters as a json file (see `configs/network1.json` for an example. For training, `task` should be set to `train` inside the json file. After that, you can just do:
 
-You can also add more flags for the hyperparameters. For that, you can find more details by running `--help`. Later there can be a flag for choosing the dataset and based on that this dataset is used for training the model.
+`python3 main.py configs/your_json_file` or `./main.py configs/your_json_file`
 
 ## Testing
 
-To test your model, just run: `python3 main.py --test`
-
+For testing, just change the `task` in the json config to `test`. The results on the MNIST dataset with `configs/network1.json` config are:
+```
+Number of errors: 156/10000
+Error Rate: 1.56%
+Test accuracy: 98.44%
+```
