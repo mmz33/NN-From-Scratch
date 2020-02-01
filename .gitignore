@@ -3,4 +3,4 @@
 *.gz
 *.pkl
 log/
-Kaggle/
+kaggle/
