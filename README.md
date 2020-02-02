@@ -11,8 +11,8 @@ Currently, there is a python script in `datasets` folder called `mnist.py` which
 - `main.py`: the main entry point.
 - `config.py`: parse the json config file that contains the network and other (hyper)parameter.
 - `engine.py`: backend engine that extracts content from the parsed json, construct the network layers, implements train and test functions.
-- `nn_module.py`: represents a NN module such as layers, activations, loss functions, etc
-- `model.py`: represents the NN model which is a stack of modules
+- `nn_module.py`: represents a NN module such as layers, activations, loss functions, etc.
+- `model.py`: represents the NN model which is a stack of modules.
 - `utils`: contains some helper functions.
 
 ## Dependencies
@@ -21,7 +21,7 @@ For dependencies, it is recommended to create a virtual enviroment and do `pip3 
 
 ## Training
 
-To train your model using the MNIST dataset, define the network and other parameters as a json file (see `configs/network1.json` for an example. For training, `task` should be set to `train` inside the json file. After that, you can just do:
+To train your model using the MNIST dataset, define the network and other parameters as a json file (see `configs/network1.json` for an example). For training, `task` should be set to `train` in the json config file. After that, you can just do:
 
 `python3 main.py configs/your_json_file` or `./main.py configs/your_json_file`
 
