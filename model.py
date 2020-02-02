@@ -5,7 +5,9 @@ from collections import defaultdict
 
 
 class NNModel:
-    """This class represents the Neural Network Model which is a stack of modules (or layers)"""
+    """
+    This class represents the Neural Network Model which is a stack of modules (or layers)
+    """
 
     def __init__(self, modules_list):
         """Build the model by creating the modules class instances

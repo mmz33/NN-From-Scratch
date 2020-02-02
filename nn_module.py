@@ -3,7 +3,9 @@ import numpy as np
 
 
 class NNModule:
-    """Abstract class representing an interface where every NN module has to implement"""
+    """
+    Abstract class representing an interface where every NN module has to implement
+    """
 
     __metaclass__ = abc.ABCMeta
     module_name = None
@@ -15,7 +17,7 @@ class NNModule:
     def forward_prop(self, x):
         """Apply forward computation
 
-        :param x: Input tensor. (B, n_in)
+        :param x: A numpy array, input tensor (B, n_in)
         :return output tensor of the next layer
         """
         return None
@@ -23,7 +25,7 @@ class NNModule:
     def back_prop(self, grad_out):
         """Apply backward computation
 
-        :param grad_out: output gradient from the l+1 layer. (1, n_out)
+        :param grad_out: A numpy array, output gradient from the l+1 layer. (1, n_out)
         :return gradient w.r.t input
         """
         return None
@@ -31,7 +33,7 @@ class NNModule:
     def get_params_grad(self, grad_out):
         """Return the gradients of the module parameters
 
-        :param grad_out: output gradient from the l+1 layer. (1, n_out)
+        :param grad_out: A numpy array, output gradient from the l+1 layer. (1, n_out)
         :return gradients w.r.t parameters
         """
         return None
@@ -39,14 +41,16 @@ class NNModule:
     def params_update(self, update_func, grad_params):
         """Updates module parameters
 
-        :param update_func: parameters update function such as gradient decent
+        :param update_func: A python function, parameters update function such as gradient decent
         :param grad_params: list of parameters' gradients
         """
         pass
 
 
 class FreeParamNNModule(NNModule):
-    """Abstract class representing free (trainable) parameters modules"""
+    """
+    Abstract class representing free (trainable) parameters modules
+    """
 
     __metaclass__ = abc.ABCMeta
     module_name = None
@@ -65,7 +69,9 @@ class FreeParamNNModule(NNModule):
 
 
 class LossNNModule(NNModule):
-    """Abstract class representing loss modules (e.g cross entropy loss, etc)"""
+    """
+    Abstract class representing loss modules (e.g cross entropy loss, etc)
+    """
 
     __metaclass__ = abc.ABCMeta
     module_name = None
@@ -94,17 +100,16 @@ class LossNNModule(NNModule):
 
 
 class Linear(NNModule):
-    """Represents a Linear layer that applies a linear projection"""
+    """
+    Represents a Linear layer that applies a linear projection
+    """
 
     module_name = "linear"
 
     def __init__(self, n_in, n_out):
         """
-        :param n_in: number of input neurons
-        :param n_out: number of output neurons
-        :param W: weight matrix parameter. (n_in, n_out)
-        :param b: bias parameter. (1, n_out)
-        :param cache_input: used for backprop later (1, n_in)
+        :param n_in: An integer, number of input neurons
+        :param n_out: An integer, number of output neurons
         """
 
         self.n_in = n_in
@@ -173,7 +178,8 @@ class ReLU(FreeParamNNModule):
 
 
 class Softmax(FreeParamNNModule):
-    """Represents a Softmax Layer
+    """
+    Represents a Softmax Layer
 
     Let x be represented as a vector [x_1, x_2, ..., x_n]
     then softmax(x) = [softmax(x_1), ..., softmax(x_n)]
@@ -224,7 +230,6 @@ class Softmax(FreeParamNNModule):
 class CrossEntropyLoss(LossNNModule):
     """
     Represents the cross entropy loss function:
-
     CE(x) = -1 * sum_{i=1}^{N} { t_i * log[p(c_i|x)] }
 
     where x is an input vector, N is the number of classes, t_i is the truth label (0 or 1),
@@ -278,7 +283,6 @@ class LogSoftmax(FreeParamNNModule):
     This can be faster and more numerically stable!
 
     log(softmax_i) = x_i - log(sum_j e^{x_j})
-
     """
 
     module_name = "log_softmax"
@@ -333,23 +337,33 @@ class LogCrossEntropyLoss(LossNNModule):
         return np.multiply(grad_out, z, z)
 
 
-_module_name_dict = {}
+_module_name_dict = {}  # dict[str] -> NNModule
 _is_module_name_dict_initialized = False
 
 
 def _init_module_name_dict():
     global _is_module_name_dict_initialized
-    _is_module_name_dict_initialized = True
-    register_modules(list(globals().values()))
+    _is_module_name_dict_initialized = True  # module lookup is initialized now
+    register_modules(list(globals().values()))  # register all modules in the dict
 
 
 def register_modules(modules):
+    """Register modules in the module lookup dict '_module_name_dict'
+
+    :param modules: A list of modules
+    """
     for module in modules:
         if isinstance(module, type) and issubclass(module, NNModule) and module.module_name:
             _module_name_dict[module.module_name] = module
 
 
 def get_module(name):
+    """Return the corresponding module object given its name
+    name is defined by the variable "module_name" for each module class
+
+    :param name: A string, the name of the module
+    :return: module object
+    """
     if not _is_module_name_dict_initialized:
         _init_module_name_dict()
     elif name not in _module_name_dict:
