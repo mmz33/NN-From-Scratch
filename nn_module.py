@@ -348,7 +348,8 @@ def _init_module_name_dict():
 
 
 def register_modules(modules):
-    """Register modules in the module lookup dict '_module_name_dict'
+    """
+    Registers modules in the module lookup dict '_module_name_dict'
 
     :param modules: A list of modules
     """
@@ -358,7 +359,8 @@ def register_modules(modules):
 
 
 def get_module(name):
-    """Return the corresponding module object given its name
+    """
+    Returns the corresponding module object given its name
     name is defined by the variable "module_name" for each module class
 
     :param name: A string, the name of the module
