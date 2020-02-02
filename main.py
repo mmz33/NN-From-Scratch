@@ -8,10 +8,12 @@ import argparse
 
 
 def main():
-    """Main entry point function. This is where it begins"""
+    """
+    Main entry point function. This is where it begins
+    """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('config_file', default=None, help='config file representing network, hyperparameters, etc')
+    parser.add_argument('config_file', default=None, help='json config file representing network, hyperparameters, etc')
     args = parser.parse_args()
     config_file = args.config_file
     assert config_file and os.path.exists(config_file), "%s doesn't exist?" % config_file

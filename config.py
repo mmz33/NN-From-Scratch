@@ -25,7 +25,10 @@ class Config:
         :return: A dict representing the deserialized json
         """
         with open(network_json, 'r') as f:
-            j = json.load(f)  # dict
+            try:
+                j = json.load(f)  # dict
+            except:
+                raise ValueError('{} is not a json file.'.format(network_json))
             return j
 
     def get_value(self, key, default_val=None):
