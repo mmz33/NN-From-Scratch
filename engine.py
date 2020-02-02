@@ -7,11 +7,23 @@ import utils
 
 
 class Engine:
+  """
+  Represents a backend engine that utilize the content of the json config to initiate the network, parameters,
+  training, testing, etc
+  """
 
   def __init__(self, config):
+    """
+    :param config: An instance of class Config.
+    """
     self.config = config
 
   def init_from_config(self, is_train=True):
+    """
+    Extract some keys from the config
+
+    :param is_train: A bool, if True then 'network' is initialized from the config
+    """
     self.model_file = self.config.get_value('model_file')
     self.data_dir = self.config.get_value('data_dir')
     self.datasets = read_datasets(self.data_dir)  # contains train, valid, and test data
@@ -25,10 +37,15 @@ class Engine:
     self.loss = self.config.get_value('loss')
     self.loss_module = nn_module.get_module(self.loss)()
 
+    # no need to init network for testing because a loaded pickle model is used
     if is_train:
       self.init_network_from_config()
 
   def init_network_from_config(self):
+    """
+    Loop over all the layers in the defined 'network' in json config and create all its layers
+    """
+
     nn_modules = []
     net = self.config.get_value('network')
     for layer_name, layer_desc in net.items():
