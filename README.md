@@ -23,9 +23,9 @@ For dependencies, it is recommended to create a virtual enviroment and do `pip3 
 
 To train your model using the MNIST dataset, define the network and other parameters as a json file (see `configs/network1.json` for an example). For training, `task` should be set to `train` in the json config file. After that, you can just do:
 
-`python3 main.py configs/your_json_file` or `./main.py configs/your_json_file`
+`python3 main.py configs/your_json_file`
 
-The models will be saved in `models/model_file` where `model_file` is the name of the model set in the json config file. This will be dumped as pickle file and can be loaded again for testing.
+The models will be saved in `model_file` which is defined in the json config file. They will be dumped as pickle files and can be loaded again for testing.
 
 ## Testing
 
