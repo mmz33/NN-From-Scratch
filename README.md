@@ -13,8 +13,9 @@ Currently, there is a python script in `datasets` folder called `mnist.py` which
 - `engine.py`: backend engine that extracts content from the parsed json, construct the network layers, implements train and test functions.
 - `nn_module.py`: represents a NN module such as layers, activations, loss functions, etc.
 - `model.py`: represents the NN model which is a stack of modules.
-- `utils`: contains some helper functions.
-- `tests`: contains functionality test functions.
+- `log.py`: represents a logger to control the output logs by using a log verbosity integer.
+- `utils.py`: contains some helper functions.
+- `tests.py`: contains functionality test functions.
 
 ## Dependencies
 
