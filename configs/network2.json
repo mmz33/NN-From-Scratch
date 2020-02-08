@@ -1,5 +1,5 @@
 {
-  "task": "test",
+  "task": "train",
   "network": {
     "layer1": {
       "class": "linear",
@@ -20,7 +20,8 @@
   },
   "model_file": "models/network2-model.pkl",
   "data_dir": "mnist_data",
-  "log_file": "none",
+  "log_file": "logs/network2.log",
+  "log_verbosity": 0,
   "lr": 0.7,
   "num_epochs": 100,
   "valid_epoch": 5,
