@@ -34,6 +34,5 @@ The models will be saved in `model_file` which is defined in the json config fil
 For testing, just change the `task` in the json config to `test`. The results on the MNIST dataset with `configs/network1.json` config are:
 ```
 Number of errors: 156/10000
-Error Rate: 1.56%
 Test accuracy: 98.44%
 ```
