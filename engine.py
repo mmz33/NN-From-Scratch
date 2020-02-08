@@ -5,6 +5,7 @@ from functools import partial
 import numpy as np
 import utils
 import copy
+from log import Log
 
 
 class Engine:
@@ -30,6 +31,7 @@ class Engine:
         self.datasets = read_datasets(self.data_dir)  # contains train, valid, and test data
         self.valid_epoch = self.config.get_value('valid_epoch', 5)
         self.log_file = self.config.get_value('log_file')
+        self.log_verbosity = self.config.get_value('log_verbosity', 0)
         self.lr = self.config.get_value('lr', 0.7)
         self.num_epochs = self.config.get_value('num_epochs', 10)
         self.decay_rate = self.config.get_value('decay_rate', 0.3)
@@ -43,6 +45,11 @@ class Engine:
         # no need to init network for testing because a loaded pickle model is used
         if is_train:
             self.init_network_from_config()
+        self.init_log()
+
+    def init_log(self):
+        self.log = Log()
+        self.log.initialize(self.log_verbosity, self.log_file)
 
     def init_network_from_config(self):
         """
@@ -86,9 +93,8 @@ class Engine:
         train_data = self.datasets.train
         valid_data = self.datasets.valid
 
-        print('Start training...')
+        print('start training...', file=self.log.v0)
         for epoch in range(1, self.num_epochs + 1):
-            print('Start epoch {}/{}'.format(epoch, self.num_epochs))
             total_epoch_loss = 0.0
             n_batches = int(np.ceil(float(train_data.num_of_data) / self.batch_size))
 
@@ -114,17 +120,17 @@ class Engine:
                 total_epoch_loss += batch_mean_loss
 
                 # print the average batch loss
-                print('batch {}/{} - loss: {}'.format(batch_num, n_batches, batch_mean_loss))
+                print('batch {}/{} - loss: {}'.format(batch_num, n_batches, batch_mean_loss), file=self.log.v1)
 
                 # backpropagate the loss and update the model params
                 z = self.loss_module.back_prop(np.tile(1.0 / len(train_batch_data), (len(train_batch_data), 1)))
                 model.back_prop(z)
                 model.update_network_params(update_func)
 
-            print('Epoch {} loss: {}'.format(epoch, total_epoch_loss / n_batches))
+            print('epoch {}/{} - loss: {}'.format(
+                epoch, self.num_epochs, total_epoch_loss / n_batches), file=self.log.v0)
 
             if epoch % self.valid_epoch == 0:
-                print('Start validation on epoch {}'.format(epoch))
                 total_valid_loss = 0.0
                 n_batches = int(np.ceil(float(valid_data.num_of_data) / self.batch_size))
                 for batch_num in range(n_batches):
@@ -135,14 +141,14 @@ class Engine:
                     total_valid_loss += np.mean(valid_batch_loss)
 
                 avg_loss = total_valid_loss / n_batches
-                print('Validation loss: {}'.format(avg_loss))
+                print('validating at epoch {} - loss: {}'.format(epoch, avg_loss), file=self.log.v0)
                 if avg_loss >= best_valid_loss:
-                    print('Validation error is not improving... stopping')
+                    print('validation error is not improving... stopping', file=self.log.v0)
                     break  # early stopping
                 else:
                     best_valid_loss = avg_loss
 
-        print('End training')
+        print('end training', file=self.log.v0)
 
         if model and self.model_file:
             utils.save_model(self.model_file, model)
@@ -157,7 +163,7 @@ class Engine:
         num_of_data = test_data.num_of_data
         num_of_batches = int(np.ceil(float(num_of_data) / self.batch_size))
         pred_acc = 0  # prediction accuracy
-        print('Start testing...')
+        print('start testing...', file=self.log.v0)
         for batch_num in range(num_of_batches):
             test_batch_data, test_batch_labels = test_data.next_batch(self.batch_size)
             net_out = model.forward_prop(test_batch_data)
@@ -165,6 +171,5 @@ class Engine:
             batch_preds = np.isclose(preds, test_batch_labels)
             pred_acc += np.sum(batch_preds)
 
-        print('Number of errors: {}/{}'.format(num_of_data - pred_acc, num_of_data))
-        print('Error Rate: %.02f%%' % ((1.0 - pred_acc / num_of_data) * 100))
-        print('Test accuracy: %.02f%%' % ((pred_acc / num_of_data) * 100))
+        print('Number of errors: {}/{}'.format(num_of_data - pred_acc, num_of_data), file=self.log.v0)
+        print('Test accuracy: %.02f%%' % ((pred_acc / num_of_data) * 100), file=self.log.v0)
