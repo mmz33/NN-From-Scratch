@@ -14,6 +14,7 @@ Currently, there is a python script in `datasets` folder called `mnist.py` which
 - `nn_module.py`: represents a NN module such as layers, activations, loss functions, etc.
 - `model.py`: represents the NN model which is a stack of modules.
 - `utils`: contains some helper functions.
+- `tests`: contains functionality test functions.
 
 ## Dependencies
 
