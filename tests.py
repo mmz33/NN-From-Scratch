@@ -1,5 +1,6 @@
 from config import Config
 from engine import Engine
+from utils import save_model
 import unittest
 import sys
 
@@ -55,6 +56,14 @@ def test_engine_init_network_from_config():
         if module.module_name:
             assert module.module_name == net['layer%i' % idx]['class']
             idx += 1
+
+
+def ignore_test_save_model():
+    net_model = {}
+    model_file = 'models-test/model1'
+    save_model(model_file, net_model)
+    model_file = 'model2'
+    save_model(model_file, net_model)
 
 
 if __name__ == '__main__':
