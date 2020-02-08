@@ -1,4 +1,5 @@
 import json
+import os
 
 
 class Config:
@@ -24,9 +25,13 @@ class Config:
         :param network_json: A string, the json config file path
         :return: A dict representing the deserialized json
         """
-        with open(network_json, 'r') as f:
-            j = json.load(f)  # dict
-            return j
+        if os.path.isfile(network_json):
+            with open(network_json, 'r') as f:
+                j = json.load(f)  # dict
+        else:
+            assert isinstance(network_json, str)
+            j = json.loads(network_json)
+        return j
 
     def get_value(self, key, default_val=None):
         """
