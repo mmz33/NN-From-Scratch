@@ -6,6 +6,10 @@ import sys
 
 
 class Stream:
+    """
+    Simple stream with write and flush operations
+    """
+
     def __init__(self, log, lvl):
         self.buf = io.StringIO()
         self.log = log
@@ -28,12 +32,28 @@ class Stream:
 
 
 class Log:
+    """
+    * The idea of this class is to set some log verbosity level to control the stream output
+    * This class can have n loggers named vi where i is a number in the range [0, n-1]
+    * They are used in the python print statements by setting the 'file' parameter to one of these loggers
+    * Each logger has a stdout stream handle by default
+    * If the log_verbosity is set to some number x, then the output of all the loggers i where i > x is suppressed
+    * Thus, let's say we put log_verbosity 0, this means that all print statements that has:
+            print(..., file=self.v1) will not show any output (same with self.v2, self.v3, etc if exists)
+    """
 
     def __init__(self):
         self.v0 = None
         self.v1 = None
 
     def initialize(self, log_verbosity, log_file=None):
+        """
+        Initialize the loggers and their stream handlers
+
+        :param log_verbosity: An integer, the log verbosity level
+        :param log_file: A string, the log file path
+        :return:
+        """
         if not 0 <= log_verbosity <= 1:
             raise ValueError('log_verbosity should be either 0 or 1. Received: {}', format(log_verbosity))
         v = [logging.getLogger('v' + str(i)) for i in range(2)]
