@@ -48,7 +48,13 @@ def test_engine_init_network_from_config():
     engine = Engine(config)
     engine.init_from_config()
     engine.init_network_from_config()
-    pass
+
+    net = config.json_dict['network']
+    idx = 1
+    for module in engine.net_model.modules:
+        if module.module_name:
+            assert module.module_name == net['layer%i' % idx]['class']
+            idx += 1
 
 
 if __name__ == '__main__':
