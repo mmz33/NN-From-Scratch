@@ -33,7 +33,7 @@ class Stream:
 
 class Log:
     """
-    * The idea of this class is to set some log verbosity level to control the stream output
+    * The idea of this class is to set some log verbosity level to control the output stream
     * This class can have n loggers named vi where i is a number in the range [0, n-1]
     * They are used in the python print statements by setting the 'file' parameter to one of these loggers
     * Each logger has a stdout stream handle by default
@@ -48,7 +48,7 @@ class Log:
 
     def initialize(self, log_verbosity, log_file=None):
         """
-        Initialize the loggers and their stream handlers
+        Initialize the loggers and their handlers (output destination)
 
         :param log_verbosity: An integer, the log verbosity level
         :param log_file: A string, the log file path
