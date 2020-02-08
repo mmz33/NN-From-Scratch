@@ -42,6 +42,6 @@ class Config:
         """
 
         value = self.json_dict.get(key, default_val)
-        if value.lower() == 'none':
+        if value and value.lower() == 'none':
             return None
         return value
