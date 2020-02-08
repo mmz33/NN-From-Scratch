@@ -4,6 +4,7 @@ from datasets.mnist import read_datasets
 from functools import partial
 import numpy as np
 import utils
+import copy
 
 
 class Engine:
@@ -25,7 +26,7 @@ class Engine:
         :param is_train: A bool, if True then 'network' is initialized from the config
         """
         self.model_file = self.config.get_value('model_file')
-        self.data_dir = self.config.get_value('data_dir')
+        self.data_dir = self.config.get_value('data_dir', 'mnist_data')
         self.datasets = read_datasets(self.data_dir)  # contains train, valid, and test data
         self.valid_epoch = self.config.get_value('valid_epoch', 5)
         self.log_file = self.config.get_value('log_file')
@@ -35,6 +36,8 @@ class Engine:
         self.start_epoch_decay = self.config.get_value('start_epoch_decay', 5)
         self.batch_size = self.config.get_value('batch_size', 100)
         self.loss = self.config.get_value('loss')
+        if not self.loss:
+          raise Exception('Loss is not defined can not continue.')
         self.loss_module = nn_module.get_module(self.loss)()
 
         # no need to init network for testing because a loaded pickle model is used
@@ -46,9 +49,11 @@ class Engine:
         Loop over all the layers in the defined 'network' in json config and create all its layers
         """
         nn_modules = []
-        net = self.config.get_value('network')
+        orig_net = self.config.get_value('network')
+        net = copy.deepcopy(orig_net)
         for layer_name, layer_desc in net.items():
             assert isinstance(layer_desc, dict)
+            assert 'class' in layer_desc, 'class is not defined for layer: {}'.format(layer_name)
             layer_class = layer_desc['class']
             layer_module = nn_module.get_module(layer_class)
             del layer_desc['class']
