@@ -40,4 +40,8 @@ class Config:
         :param key: A string representing the key value
         :param default_val: If key is not found then return this value
         """
-        return self.json_dict.get(key, default_val)
+
+        value = self.json_dict.get(key, default_val)
+        if value.lower() == 'none':
+            return None
+        return value
