@@ -80,7 +80,7 @@ class Log:
             if not v[i].handlers:
                 v[i].addHandler(null)
 
-        # python 'print(...)' expects a Steam for 'file' parameter
+        # python 'print(..., file=...)' expects a Stream for 'file' parameter
         self.v0 = Stream(v[0], logging.DEBUG)
         self.v1 = Stream(v[1], logging.DEBUG)
 
