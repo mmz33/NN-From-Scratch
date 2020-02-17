@@ -19,11 +19,11 @@ Currently, there is a python script in `datasets` folder called `mnist.py` which
 
 ## Dependencies
 
-For dependencies, it is recommended to create a virtual enviroment and do `pip3 install -r requirements.txt`. But anyway the versions are not so important as the code uses basic methods. Moreover, `matplotlib` is only needed for this code in case you want to plot some MNIST images.
+For dependencies, it is recommended to create a virtual enviroment and do `pip3 install -r requirements.txt`. But anyway the versions are not so important as the code uses basic methods. Moreover, `matplotlib` is only needed for this code in case you want to plot some images.
 
 ## Training
 
-To train your model using the MNIST dataset, define the network and other parameters as a json file (see `configs/network1.json` for an example). For training, `task` should be set to `train` in the json config file. After that, you can just do:
+To train your model, define the network and other parameters as a json file (see `configs/network1.json` for an example). For training, `task` should be set to `train` in the json config file. After that, you can just do:
 
 `python3 main.py json_file`
 
