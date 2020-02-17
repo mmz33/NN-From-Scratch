@@ -10,7 +10,7 @@ Currently, there is a python script in `datasets` folder called `mnist.py` which
 
 - `main.py`: the main entry point.
 - `config.py`: parse the json config file that contains the network and other (hyper)parameter.
-- `engine.py`: backend engine that extracts content from the parsed json, construct the network layers, implements train and test functions.
+- `engine.py`: backend engine that extracts content from the parsed json, construct the network layers, implements train and test functions, etc.
 - `nn_module.py`: represents a NN module such as a layer, activation function, loss function, etc.
 - `model.py`: represents the NN model which is a stack of modules.
 - `log.py`: represents a logger to control the output logs by using a log verbosity integer.
