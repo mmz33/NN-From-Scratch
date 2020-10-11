@@ -368,6 +368,6 @@ def get_module(name):
     """
     if not _is_module_name_dict_initialized:
         _init_module_name_dict()
-    elif name not in _module_name_dict:
+    if name not in _module_name_dict:
         raise Exception('Unknown module name: {}'.format(name))
     return _module_name_dict[name]
