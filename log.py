@@ -67,7 +67,10 @@ class Log:
             elif os.path.isdir(os.path.dirname(l)):
                 handler = logging.FileHandler(l)
             else:
-                raise Exception('Invalid log: {}'.format(l))
+                if not os.path.exists(l):
+                    raise Exception('{} not found'.format(os.path.dirname(l)))
+                else:
+                    raise Exception('Invalid log: {}'.format(l))
             handler.setLevel(logging.DEBUG)
             for i in range(log_verbosity + 1):
                 if handler not in v[i].handlers:
