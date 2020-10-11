@@ -1,30 +1,12 @@
 {
   "task": "train",
   "network": {
-    "layer1": {
-      "class": "linear",
-      "n_in": 784,
-      "n_out": 300
-    },
-    "layer2": {
-      "class": "relu"
-    },
-    "layer3": {
-      "class": "linear",
-      "n_in": 300,
-      "n_out": 200
-    },
-    "layer4": {
-      "class": "relu"
-    },
-    "layer5": {
-      "class": "linear",
-      "n_in": 200,
-      "n_out": 10
-    },
-    "layer6": {
-      "class": "softmax"
-    }
+    "layer1": {"class": "linear", "n_in": 784, "n_out": 300},
+    "layer2": {"class": "relu"},
+    "layer3": {"class": "linear", "n_in": 300,  "n_out": 200},
+    "layer4": {"class": "relu"},
+    "layer5": {"class": "linear", "n_in": 200, "n_out": 10},
+    "layer6": {"class": "softmax"}
   },
   "model_file": "models/network1-model.pkl",
   "data_dir": "mnist_data",
